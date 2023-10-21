@@ -1,21 +1,8 @@
 import folium
-import geopandas as gpd
 import pandas as pd
 
 
 def Map():
-    # Charger les données géographiques des départements français
-    france_geojson = gpd.read_file('./assets/departements.geojson')
-
-    # Trouver les limites géographiques de la France
-    # france_bounds = [france_geojson.bounds.minx.min(), france_geojson.bounds.miny.min(),
-    #                 france_geojson.bounds.maxx.max(), france_geojson.bounds.maxy.max()]
-
-    # Calculer les limites du graphique pour centrer la vue sur la France
-    # lon_center = (france_bounds[0] + france_bounds[2]) / 2
-    # lat_center = (france_bounds[1] + france_bounds[3]) / 2
-    # lon_range = [france_bounds[0], france_bounds[2]]
-    # lat_range = [france_bounds[1], france_bounds[3]]
 
     # Charger les données sur la valeur foncière moyenne par département
     df = pd.read_pickle('./assets/dataframe_avec_coord.pkl')

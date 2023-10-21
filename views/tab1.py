@@ -1,4 +1,4 @@
-from dash import Dash, html, dcc, dash_table
+from dash import html, dcc, dash_table
 import pandas as pd
 
 dico= {
@@ -27,9 +27,10 @@ Tab1= html.Div(className='control-tab', children=[
         html.Br(),
         html.Div("Les valeurs foncières des habitations en France nous sont données sur une période de 4 ans \
         s'étendant de 2018 à 2021 inclu. Ces valeurs foncières qui prennent en compte les appartements, dépendances, maisons et zones industrielles \
-        sont repertoriées dans 4 bases de données différentes dépendant de l'années. Ces bases de données contiennent des informations sur le type de \
+        sont repertoriées dans 4 bases de données différentes dépendant de l'année. Ces bases de données contiennent des informations sur le type de \
         logement, la situation géographique (communes, départements, code postal, ...), les caractéristiques de ces logements (superficie, nombres de pièces) \
         Chaque base contient des millions d'individus (ici, ce sont les logements). "),
+        html.Br(),
         html.Div("Il nous est demandé de créer un modèle de prédiction de la valeur foncière en passant par une classification de valeurs manquantes sur le \
         type du local. "),
 
@@ -42,7 +43,7 @@ Tab1= html.Div(className='control-tab', children=[
         html.H4("1- L'analyse univariée"),
         html.Br(),
         dcc.Markdown('''
-            Chaque base de données contenait plus de **3 millions** pour **43 variables**.
+            Chaque base de données contenient plus de **3 millions** pour **43 variables**.
             Les préréquis à l'analyse sont la transformation de valeur de la variable cible (Valeur fonciere) en float (type numéric), et la concaténation de nos 4 bases.
             Parmis nos variables, certaines (indicatrices) étaient toutes **nulles**. Il s'agit notamment de:
             - Identifiant de document
@@ -81,6 +82,7 @@ Tab1= html.Div(className='control-tab', children=[
             - Code voie et Voie
             - Code departement et Departement
             - Code commune et Commune
+                     
             **Autres remarques: Ces colonnes en double ont été laissée tombée (pas toutes mais une par paire).**
         '''),
         
@@ -93,7 +95,8 @@ Tab1= html.Div(className='control-tab', children=[
             d'autres sources notamment: 
             - De INSEE sur la longitute-latitude des communes
             - De INSEE sur le prix au m2 par commune
-            - De .... sur le niveau de vie par commune
+            - De INSEE sur le niveau de vie par commune
+                     
             Comme attendu, il y'a une grande corrélation entre les deux dernières et la valeur foncière.
 
             **NB**: En ce qui concerne la classification, le type du local a bien une relation (correlation) avec le nombre de pièces principales et la surface du terrain
@@ -102,6 +105,7 @@ Tab1= html.Div(className='control-tab', children=[
 
         dcc.Markdown('''
             Une classification non supervisé (CAH) de variables nous a permis de voir les variables qui semblaient apporter la même information.
+                     
             **NB**: Celà a influencé nos choix pour former nos modèles.
         '''),
 
@@ -126,7 +130,7 @@ Tab1= html.Div(className='control-tab', children=[
             Il serait "mieux" de faire la prédiction de chaque type de logement: c'est à dire faire des modèle adapté à chaque type.
             
             - Il est mis à disposition une application dash communiquant avec 
-            - une API fastapi pour gérer la partie classification du type de local et l'estimation des prix.
+            - une API (réalisée avec fastapi) pour gérer la partie classification du type de local et l'estimation des prix.
             - Un github avec tous les notebooks de synthèse.
                      
             Veuillez trouver les liens ci-bas.
@@ -140,18 +144,22 @@ Tab1= html.Div(className='control-tab', children=[
 
         dcc.Markdown('''
             Sous la supervision de M. Sardellitti, ce projet de machine learning a été réalisé par 4 élèves du Master SISE:
-            - Cyrielle ()
+            - Cyrielle (https://github.com/cyriellebarailler26)
             - Nathan (https://github.com/Naghan1132)
-            - Joseph ()
-            - Wendyam ()
+            - Joseph (https://github.com/joepelham)
+            - Wendyam (https://github.com/Yameogo123)
+                     
                      
             Lien github de notre travail : https://github.com/Naghan1132/Property_price_prediction/tree/main
                      
+
             Les liens API:
-                - route principales: adresse= http:
-                - classification unitaire (get) : adresse + /classification/(le nombre de pièce)/(la surface du terrain)
-                - classification sur un fichier (post): adresse + /classification (avec un envoi du fichier en csv ou txt)
-                - Idem pour la prédiction en remplaçant classification par regression dans la route.
+            - route principales: adresse= http://api-dash.eu-4.evennode.com
+            - Le csv de fichiers concatennés (2018-21) (sample de 500 000): http://api-dash.eu-4.evennode.com/data
+            - classification unitaire (get) : http://api-dash.eu-4.evennode.com/classification/(le-nombre-de-pièce)/(la-surface-du-terrain)
+            - classification sur un fichier (post): http://api-dash.eu-4.evennode.com/classification (avec un envoi du fichier en csv ou txt)
+            - regression unitaire (post): http://api-dash.eu-4.evennode.com/prediction/simple (avec un envoi du formulaire)
+            - regression sur un fichier (post): http://api-dash.eu-4.evennode.com/prediction (avec un envoi du fichier en csv ou txt)
         '''),
 
         html.Br(),

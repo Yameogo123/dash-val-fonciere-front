@@ -31,12 +31,9 @@ Tab2= html.Div(className='control-tab', children=[
                 dbc.Button("refresh", color="danger", id="btn", n_clicks=0),
                 html.Hr(),
                 dbc.Toast(
-                    "rafraichissement enclenché",
-                    id="positioned-toast",
-                    header="Positioned toast",
-                    is_open=False,
-                    dismissable=True,
-                    icon="danger",
+                    "rafraichissement enclenché", id="positioned-toast",
+                    header="Positioned toast", is_open=False,
+                    dismissable=True, icon="danger",
                     duration= 2000,
                     # top: 66 positions the toast below the navbar
                     style={"position": "fixed", "top": 66, "right": 10, "width": 350},
@@ -66,7 +63,7 @@ Tab2= html.Div(className='control-tab', children=[
                     [
                         html.Div([
                             html.Div(children='La Valeur foncière moyenne par département en France'),
-                            html.Iframe(id='map', width='100%', height='350px', srcDoc=Map()._repr_html_())
+                            html.Iframe(id='map', width='100%', height='370px', srcDoc=Map()._repr_html_())
                         ]),
                     ] 
                 ), style={'width': '45%', 'display': 'inline-block', 'height': '30%'}
