@@ -8,10 +8,6 @@ import plotly.express as px
 
 from constantes import *
 
-global ann
-
-ann= None
-
 rep1= df[["mois", "jour", "annee", "Valeur fonciere"]].groupby(["annee", "mois", "jour"], as_index=False).agg("sum")
 rep2= df.groupby('annee', as_index=False)['Valeur fonciere'].count()
 rep3= df.groupby('Code type local', as_index=False)[['Valeur fonciere', 'Nombre pieces principales', 'Surface terrain']].mean()
@@ -21,27 +17,9 @@ rep4= df.groupby('Nature culture', as_index=False)[['Valeur fonciere', 'Nombre p
 Tab2= html.Div(className='control-tab', children=[
     html.H2(className='title', children=[html.P("Exploration")]),
     html.Br(),
-    dbc.Row(
-        [
-            dbc.Col([dcc.Slider( df['annee'].min(), df['annee'].max(),
-                step=None, value=df['annee'].min(), marks={str(year): str(year) for year in df['annee'].unique()},
-                id='year-slider'
-            )]),
-            dbc.Col([
-                dbc.Button("refresh", color="danger", id="btn", n_clicks=0),
-                html.Hr(),
-                dbc.Toast(
-                    "rafraichissement enclenché", id="positioned-toast",
-                    header="Positioned toast", is_open=False,
-                    dismissable=True, icon="danger",
-                    duration= 2000,
-                    # top: 66 positions the toast below the navbar
-                    style={"position": "fixed", "top": 66, "right": 10, "width": 350},
-                )
-            ]),
+    html.H4(className='sub-title', children=[html.P("Visualisation d'un sample de 500 000 lignes.")]),
+    html.Br(),
 
-        ]
-    ),
     html.Div(className="head", children=[
         html.Div(className="first-row", children=[
             dbc.Card(
@@ -115,13 +93,29 @@ Tab2= html.Div(className='control-tab', children=[
             dbc.CardBody(
                 [
                     html.Div([
+                        html.Div(children='Nombre de pièce par valeur foncière avec la surface en amplitude'),
                         dcc.Graph(id='scatter-with-slider', figure=px.scatter(rep4, x="Valeur fonciere", y="Nombre pieces principales", color="Nature culture", size="Surface terrain"))
+                    ])
+                ]
+            )
+        ),
+
+        html.Br(),
+
+        dbc.Card(
+            dbc.CardBody(
+                [
+                    html.Div([
+                        html.Div(children='Décompte de Valeur foncière par mois'),
+                        dcc.Graph(id='map-with-slider', figure=px.density_heatmap(df, x="mois", y="Valeur fonciere"))
                     ])
                 ]
             )
         ),
         
     ]),
+
+    html.Div(id="hidden-div", style={"display":"none"})
     
 ])
 
@@ -134,3 +128,7 @@ def displayClick(_, is_open):
     if ctx.triggered_id=="btn":
         return not is_open
     return is_open 
+
+
+
+

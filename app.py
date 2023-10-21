@@ -68,5 +68,5 @@ def render_page_content(pathname):
 if __name__ == '__main__':
     port= os.getenv("PORT") if os.getenv("PORT") is not None else 6000 
     #host="0.0.0.0"
-    app.run(debug=True, host="0.0.0.0", port= os.getenv("PORT"))
-    #app.run(debug= True)
+    #app.run(debug=True, host="0.0.0.0", port= os.getenv("PORT"))
+    app.run(debug= True)

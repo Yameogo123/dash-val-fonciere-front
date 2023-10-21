@@ -297,7 +297,7 @@ accordion = html.Div(
                     dcc.Upload(
                         id='c_données',
                         children=html.Div([
-                            'Drag and Drop ou ',
+                            'glisser déposé ou ',
                             html.A('Choisir..', style={}, className="btn btn-primary")
                         ]),
                         style={
@@ -357,7 +357,7 @@ tab3_content = dbc.Card(
             html.Br(),
             accordion, 
             html.Br(),
-            dbc.Button("Former", color="primary", id="pred", disabled= True),
+            dbc.Button("Former", color="primary", id="form", disabled= True),
         ]
     ),
     className="mt-3",
@@ -437,9 +437,9 @@ def output_text(commune, surface_bati, surface, piece, code, annee, poste, is_op
     
 
 @callback(Output('output-data-upload', 'children'),
-        Input('upload-data', 'contents'),
-        State('upload-data', 'filename'),
-        State('upload-data', 'last_modified'))
+    Input('upload-data', 'contents'),
+    State('upload-data', 'filename'),
+    State('upload-data', 'last_modified'))
 def update_output(content, name, date):
     if content is not None:
         children = parse_contents(content, name, date) 
