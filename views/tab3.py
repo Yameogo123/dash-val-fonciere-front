@@ -255,7 +255,7 @@ accordion = html.Div(
                     html.Br(),
                     dcc.Dropdown(
                         id="c_pretraitement",
-                        options=["drop na > 50%", "standardiser les quantitatifs", "Normaliser les quantitatifs", "Encoder les qualitatifs par label", "ecoder les qualitatifs par onehot"],
+                        options=["drop na > 50%", "standardiser les quantitatifs", "Normaliser les quantitatifs", "Encoder les qualitatifs par label", "Encoder les qualitatifs par onehot"],
                         searchable= True, placeholder="Faites vos choix", multi= True
                     )
                 ],
@@ -280,7 +280,7 @@ accordion = html.Div(
                     html.P("Choisir la réduction que vous aimeriez appliquer"),
                     html.Br(),
                     dcc.Dropdown(
-                        id="c_pretraitement",
+                        id="c_dimension",
                         options=["ACP", "ACM", "AFDM", "select k best"],
                         searchable= True, placeholder="Faites vos choix", multi= False
                     ),
@@ -295,7 +295,7 @@ accordion = html.Div(
                     html.Label("Choisir une base de petite taille"),
                     html.Br(),
                     dcc.Upload(
-                        id='c_données',
+                        id='c_donnees',
                         children=html.Div([
                             'glisser déposé ou ',
                             html.A('Choisir..', style={}, className="btn btn-primary")
@@ -313,6 +313,7 @@ accordion = html.Div(
                 title="BASE DE DONNÉES",
             ),
         ],
+        # always_open=True
     ),
 
 )
@@ -358,6 +359,8 @@ tab3_content = dbc.Card(
             accordion, 
             html.Br(),
             dbc.Button("Former", color="primary", id="form", disabled= True),
+            html.Br(),
+            html.Div(id="results")
         ]
     ),
     className="mt-3",
@@ -444,3 +447,36 @@ def update_output(content, name, date):
     if content is not None:
         children = parse_contents(content, name, date) 
         return children
+
+
+@callback(Output("results", "children"), Output("form", "disabled"),
+    Input('c_model', "value"),        
+    Input('c_pretraitement', "value"),        
+    Input('c_ignore', "value"),        
+    Input('c_dimension', "value"),        
+    Input('c_donnees', "contents"),    
+    State('c_donnees', 'filename')    
+)
+def reformation(model, pretraitement, ignore, dimension, donnee, filename):
+
+    if None not in [model, pretraitement, ignore, dimension, donnee]:
+        content_type, content_string = donnee.split(',')
+
+        decoded = base64.b64decode(content_string)
+        files = {'database': (filename, decoded), 'filename': filename}
+        #{"filename": filename, "filedata": decoded}
+
+        form= {
+            "model": model,
+            "pretraitement": pretraitement,
+            "ignore": ignore,
+            "dimension": dimension
+        }
+
+        #r = requests.post('http://api-dash.eu-4.evennode.com/reformation', data={"reformation": form, "database": {"filename": filename, "filedata": decoded}}, headers={"Content-Type":'application/x-www-form-urlencoded'})
+        #resultats= r.json()
+        #print(resultats)
+
+
+        return html.P("merci votre demande a été reçu et sera traité dans les plus bref délai"), False
+    return None, True
